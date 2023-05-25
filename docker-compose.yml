@@ -3,8 +3,11 @@ services:
     image: postgres
     restart: on-failure
     volumes:
-      - ./db_volume:/var/lib/postgresql/data
+      - wav_converter:/var/lib/postgresql/data
     ports:
       - "5433:5432"
     env_file:
       - .env
+
+volumes:
+  wav_converter:

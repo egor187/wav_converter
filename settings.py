@@ -2,10 +2,10 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    db_url: str
+    DB_URL: str
 
     class Config:
-        env_file = "../.env"
+        env_file = ".env"
 
 
 settings = Settings()
