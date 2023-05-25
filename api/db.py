@@ -1,10 +1,19 @@
-from sqlalchemy import DateTime, Integer, Uuid, MetaData, String, create_engine, func
-from sqlalchemy.orm import DeclarativeBase, Session, mapped_column
+from sqlalchemy import (
+    ForeignKey,
+    DateTime,
+    Integer,
+    Uuid,
+    MetaData,
+    String,
+    create_engine,
+    func,
+    )
+from sqlalchemy.orm import DeclarativeBase, Session, mapped_column, Mapped, relationship
 from uuid import uuid4
 
 from settings import settings
 
-engine = create_engine(settings.db_url)
+engine = create_engine(settings.DB_URL)
 metadata_obj = MetaData()
 metadata_obj.create_all(engine)
 
@@ -27,10 +36,19 @@ class TimeStampedModel(IDModel):
 
 
 class User(TimeStampedModel):
-    __tablename__ = 'user'
+    __tablename__ = "user"
 
     name = mapped_column(String, nullable=False, unique=True)
     token = mapped_column(Uuid, nullable=False, default=uuid4)
+    files: Mapped[list["File"]] = relationship(back_populates="user")
+
+
+class File(TimeStampedModel):
+    __tablename__ = "file"
+
+    user_id = mapped_column(Integer, ForeignKey("user.id"), nullable=False)
+    user: Mapped["User"] = relationship(back_populates="files")
+    path = mapped_column(String, nullable=False)
 
 
 async def get_db():
