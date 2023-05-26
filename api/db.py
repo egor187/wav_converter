@@ -7,7 +7,7 @@ from sqlalchemy import (
     String,
     create_engine,
     func,
-    )
+)
 from sqlalchemy.orm import DeclarativeBase, Session, mapped_column, Mapped, relationship
 from uuid import uuid4
 
