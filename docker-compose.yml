@@ -8,6 +8,17 @@ services:
       - "5433:5432"
     env_file:
       - .env
+  wav_converter:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    restart: on-failure
+    container_name: wav_converter
+    depends_on:
+      - db
+
 
 volumes:
   wav_converter:
